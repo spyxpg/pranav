@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pranav Garneria - Cyber Security Specialist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Dark Mode Colors (Default) */
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #151515;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent-primary: #00ff41;
+            --accent-secondary: #00d4ff;
+            --accent-glow: rgba(0, 255, 65, 0.3);
+            --border-color: #333;
+        }
+
+        body.light-mode {
+            /* Light Mode Colors */
+            --bg-primary: #e5eaf5;
+            --bg-secondary: #a0d2eb;
+            --bg-card: #ffffff;
+            --text-primary: #2c2c2c;
+            --text-secondary: #666666;
+            --accent-primary: #8458B3;
+            --accent-secondary: #a28089;
+            --accent-glow: rgba(132, 88, 179, 0.2);
+            --border-color: #d0bdf4;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Matrix Background Effect */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.05;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--bg-secondary);
+            padding: 1rem 2rem;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent-primary);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-primary);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            z-index: 1001;
+            background: var(--bg-card);
+            border: 1px solid #fff;
+            border-radius: 50px;
+            padding: 5px;
+            cursor: pointer;
+            display: flex;
+            /* align-items: center; */
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .theme-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Section Styling */
+        section {
+            min-height: 100vh;
+            padding: 6rem 2rem 4rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1, h2 {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 2px;
+        }
+
+        /* Hero Section */
+        #home {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .hero-image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            min-width: 300px;
+        }
+
+        .hero-image {
+            width: 400px;
+            height: 480px;
+            border-radius: 50%;
+            border: 4px solid var(--accent-primary);
+            box-shadow: 0 0 40px var(--accent-glow);
+            animation: float 3s ease-in-out infinite;
+            object-fit: fill;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .glitch {
+            position: relative;
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--text-primary);
+            animation: glitch 1s linear infinite;
+        }
+
+        @keyframes glitch {
+            2%, 64% {
+                transform: translate(2px, 0) skew(0deg);
+            }
+            4%, 60% {
+                transform: translate(-2px, 0) skew(0deg);
+            }
+            62% {
+                transform: translate(0, 0) skew(5deg);
+            }
+        }
+
+        .typing-effect {
+            overflow: hidden;
+            border-right: 2px solid var(--accent-primary);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+            font-size: 1.2rem;
+            color: var(--accent-secondary);
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--accent-primary); }
+        }
+
+        .contact-info {
+            margin: 1.5rem 0;
+        }
+
+        .contact-info p {
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: var(--bg-primary);
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px var(--accent-glow);
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px var(--accent-glow);
+            border-color: var(--accent-primary);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card h3 {
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Skills */
+        .skill-category {
+            margin: 2rem 0;
+        }
+
+        .skill-category h3 {
+            color: var(--accent-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .skill-tag {
+            background: var(--bg-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid var(--accent-primary);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .skill-tag:hover {
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            transform: scale(1.05);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -0.6rem;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .timeline-item h3 {
+            color: var(--accent-primary);
+        }
+
+        .timeline-item .date {
+            color: var(--accent-secondary);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            cursor: pointer;
+            aspect-ratio: 1;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 30px var(--accent-glow);
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 0 50px var(--accent-glow);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0.5rem 1rem;
+            border-radius: 50%;
+        }
+
+        /* Achievements */
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .achievement-item {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-primary);
+            transition: all 0.3s ease;
+        }
+
+        .achievement-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px var(--accent-glow);
+        }
+
+        /* Contact Form */
+        .contact-form {
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--accent-primary);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            color: var(--text-primary);
+            font-size: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-primary);
+            transform: translateY(-5px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1rem;
+            }
+
+            .theme-toggle {
+                top: 0.5rem;
+                right: 0.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .glitch {
+                font-size: 2rem;
+            }
+
+            .hero-image {
+                width: 200px;
+                height: 200px;
+            }
+        }
+
+        /* Certification Badge */
+        .cert-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+
+        /* Particles Effect */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Background -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <span class="theme-icon" id="theme-icon">🌙</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#certifications">Certifications</a></li>
+            <li><a href="#achievements">Achievements</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home">
+        <div class="hero-content">
+            <div class="glitch">Welcome to My Portfolio!</div>
+            <h1>Pranav Garneria</h1>
+            <div class="typing-effect">Red Team & Offensive Security Specialist</div>
+            
+            <p style="margin-top: 0.5rem; color: var(--text-secondary);">
+                Specializing in Red Team Operations, VAPT, Web/Mobile/API Security, 
+                Network Penetration Testing & Adversary Emulation.
+                <p>Able to find the solutions on unexpected situation.</p> 
+                
+            </p>
+            
+            <div class="contact-info">
+                <p>📞 <strong>Phone:</strong> 9015000844</p>
+                <p>📧 <strong>Email:</strong> pranavgarneria@gmail.com</p>
+                <p>💼 <strong>LinkedIn:</strong> <a href="https://linkedin.com/in/pranavgarneria" target="_blank" style="color: var(--accent-primary);">linkedin.com/in/pranavgarneria</a></p>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <a href="#" class="btn" onclick="downloadResume(); return false;">📥 Download CV</a>
+            </div>
+        </div>
+        <div class="hero-image-container">
+            <img class="hero-image" style="background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); display: flex; align-items: center; justify-content: center;" src="pranav.jpg">
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <div class="container">
+            <h2>🔧 Skills & Technologies</h2>
+            
+            <div class="skill-category">
+                <h3>Core Skills</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Web Application Security</span>
+                    <span class="skill-tag">VAPT</span>
+                    <span class="skill-tag">Penetration Testing</span>
+                    <span class="skill-tag">Android/iOS Testing</span>
+                    <span class="skill-tag">Network Security</span>
+                    <span class="skill-tag">Wireless Testing</span>
+                    <span class="skill-tag">OSINT</span>
+                    <span class="skill-tag">API Testing</span>
+                    <span class="skill-tag">Firewall & Server Audits</span>
+                    <span class="skill-tag">Active Directory</span>
+                    <span class="skill-tag">Footprinting & Enumeration</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3>Security Tools</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Burp Suite</span>
+                    <span class="skill-tag">Postman</span>
+                    <span class="skill-tag">Nessus</span>
+                    <span class="skill-tag">Metasploit</span>
+                    <span class="skill-tag">Wireshark</span>
+                    <span class="skill-tag">SQLmap</span>
+                    <span class="skill-tag">Hydra</span>
+                    <span class="skill-tag">Nmap</span>
+                    <span class="skill-tag">Hashcat</span>
+                    <span class="skill-tag">Maltego</span>
+                    <span class="skill-tag">Bettercap</span>
+                    <span class="skill-tag">Shodan</span>
+                    <span class="skill-tag">Gobuster</span>
+                    <span class="skill-tag">Ffuf</span>
+                    <span class="skill-tag">Github</span>
+                    <span class="skill-tag">Ghauri</span>
+                    <span class="skill-tag">Android Studio</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3>Frameworks & Standards</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">OWASP Top 10</span>
+                    <span class="skill-tag">CVE</span>
+                    <span class="skill-tag">MITRE ATT&CK</span>
+                    <span class="skill-tag">ISO 27001</span>
+                    <span class="skill-tag">NIST</span>
+                    <span class="skill-tag">CWE</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3>Platforms</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Kali Linux</span>
+                    <span class="skill-tag">Ubuntu</span>
+                    <span class="skill-tag">CSI Linux</span>
+                    <span class="skill-tag">Web3</span>
+                    <span class="skill-tag">Windows</span>
+                    <span class="skill-tag">Linux Environments</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <div class="container">
+            <h2>💼 Professional Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="date">August 2024 - Present</div>
+                    <h3>Cyber Security Analyst</h3>
+                    <h4 style="color: var(--accent-secondary);">Cynox Security LLP, Jamshedpur, Jharkhand</h4>
+                    <ul style="margin-top: 1rem;">
+                        <li>Lead offensive security and full-lifecycle VAPT engagements across web applications, APIs, mobile and desktop apps, servers, firewalls and IP/network infrastructure</li>
+                        <li>Identified and exploited high-impact issues including SQLi, XSS, Command Injection, Race Conditions, IDOR, Broken Authentication, and Business Logic flaws</li>
+                        <li>Developed comprehensive reports with technical findings, risk ratings, and remediation strategies</li>
+                        <li>Mentored and onboarded junior analysts and interns, delivering hands-on training in VAPT methodologies and red-team operations</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="date">May 2023 - Present</div>
+                    <h3>Security Researcher</h3>
+                    <h4 style="color: var(--accent-secondary);">HackerOne, BugCrowd, HackenProof (Remote)</h4>
+                    <ul style="margin-top: 1rem;">
+                        <li>Discovered and reported vulnerabilities including SQLi, XSS, RCE, IDOR, and Business Logic flaws across web, mobile, API, and infrastructure targets</li>
+                        <li>Led red-team operations and VAPT, reporting 250+ findings across Web, API, mobile and infrastructure domains</li>
+                        <li>Recognized for responsible disclosures with Hall of Fame mentions and awarded bounties totaling $7,412</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="date">June 2024 - August 2024</div>
+                    <h3>Cyber Security Trainee</h3>
+                    <h4 style="color: var(--accent-secondary);">Cyberyaan Training and Consultancy, New Delhi</h4>
+                    <ul style="margin-top: 1rem;">
+                        <li>Completed Certified Ethical Hacker (CEH) training</li>
+                        <li>Simulated advanced attacks using MITRE ATT&CK mapping</li>
+                        <li>Generated red team assessment reports with risk mitigation strategies</li>
+                        <li>Practiced privilege escalation, persistence, and post-exploitation techniques</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="container">
+            <h2>🚀 Featured Projects</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>KEYLOGGER</h3>
+                    <p><strong>Tech Stack:</strong> Python, pynput library, File I/O handling</p>
+                    <p><strong>Duration:</strong> November 2023 - December 2023</p>
+                    <ul style="margin-top: 1rem;">
+                        <li>Designed and implemented a keylogger to demonstrate how keystroke-capturing malware operates</li>
+                        <li>Captured and logged keystrokes in real time to study data leakage vectors and user activity monitoring</li>
+                        <li>Implemented secure data storage and stealth techniques to simulate real-world attack scenarios</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>SPYxPG Toolkit</h3>
+                    <p><strong>Tech Stack:</strong> Python, Bash Script, Tools API</p>
+                    <p><strong>Duration:</strong> June 2024 - October 2024</p>
+                    <ul style="margin-top: 1rem;">
+                        <li>Built a Bash SELECT MODULE CLI wrapper for quick reconnaissance tasks (Whois, Nmap, DNS Lookup, Subdomain enumeration)</li>
+                        <li>Automated chaining of follow-up scans (masscan/nmap, httpx, dirsearch) via Bash wrapper</li>
+                        <li>Exported consolidated results for streamlined security assessments</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section id="certifications">
+        <div class="container">
+            <h2>🎓 Certifications & Courses</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Certified Ethical Hacker - Practical (CEH v12)</h3>
+                    <p style="color: var(--accent-secondary);"><strong>EC-Council</strong></p>
+                    <span class="cert-badge">VERIFIED</span>
+                </div>
+                <div class="card">
+                    <h3>Ethical Hacking Essentials</h3>
+                    <p style="color: var(--accent-secondary);"><strong>EC-Council</strong></p>
+                    <span class="cert-badge">VERIFIED</span>
+                </div>
+                <div class="card">
+                    <h3>Foundation of Cyber Security</h3>
+                    <p style="color: var(--accent-secondary);"><strong>Palo Alto</strong></p>
+                    <span class="cert-badge">VERIFIED</span>
+                </div>
+                <div class="card">
+                    <h3>Dark Web Essentials</h3>
+                    <p style="color: var(--accent-secondary);"><strong>EC-Council</strong></p>
+                    <span class="cert-badge">VERIFIED</span>
+                </div>
+                <div class="card">
+                    <h3>Hackers Prey CTF</h3>
+                    <p style="color: var(--accent-secondary);"><strong>HackersPrey</strong></p>
+                    <span class="cert-badge">VERIFIED</span>
+                </div>
+                <div class="card">
+                    <h3>Information Security</h3>
+                    <p style="color: var(--accent-secondary);"><strong>Infosys Springboard</strong></p>
+                    <span class="cert-badge">VERIFIED</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section id="achievements">
+        <div class="container">
+            <h2>🏆 Achievements & Recognition</h2>
+            <div class="achievement-grid">
+                <div class="achievement-item">
+                    <h3 style="color: var(--accent-primary);">🌟 Hall of Fame</h3>
+                    <p>Recognized by prestigious organizations including <strong>NASA, DHS (U.S.), BIA, Assa Abloy, CoinW, CoinmetroWeb3, Flow, OFZA Web3</strong>, and others for responsible vulnerability disclosures</p>
+                </div>
+                
+                <div class="achievement-item">
+                    <h3 style="color: var(--accent-primary);">🥇 CTF Champion</h3>
+                    <p>Winner of <strong>2 Capture-the-Flag competitions</strong> at GNA University (Cyberyaan and Tech Pragya)</p>
+                </div>
+                
+                <div class="achievement-item">
+                    <h3 style="color: var(--accent-primary);">🎤 Workshop Speaker</h3>
+                    <p>Delivered <strong>5+ hands-on workshops</strong> on Ethical Hacking, Offensive Security, VAPT, Networking, and Bug Bounty hunting for student and professional audiences</p>
+                </div>
+                
+                <div class="achievement-item">
+                    <h3 style="color: var(--accent-primary);">🏅 Top 20 Ranking</h3>
+                    <p>Ranked <strong>Top 20 out of 1,000+ participants</strong> in Hackers Prey "Brute Force 4.0" CTF</p>
+                </div>
+                
+                <div class="achievement-item">
+                    <h3 style="color: var(--accent-primary);">🐛 Critical Vulnerabilities</h3>
+                    <p>Discovered and responsibly disclosed numerous critical vulnerabilities including <strong>XSS, SQLi, HTML injection, insecure file upload, business logic flaws, race conditions, and 2FA bypasses</strong></p>
+                </div>
+                
+                <div class="achievement-item">
+                    <h3 style="color: var(--accent-primary);">💰 Bug Bounty Earnings</h3>
+                    <p>Awarded <strong>$7,412 in bounties</strong> (including collaborative findings) through Bug Bounty platforms and Responsible Disclosure programs</p>
+                </div>
+                
+                <div class="achievement-item">
+                    <h3 style="color: var(--accent-primary);">📊 250+ Security Findings</h3>
+                    <p>Reported over <strong>250 security findings</strong> across Web, API, mobile, and infrastructure domains</p>
+                </div>
+                
+                <div class="achievement-item">
+                    <h3 style="color: var(--accent-primary);">🎯 Red Team Operations</h3>
+                    <p>Led comprehensive red-team operations with <strong>MITRE ATT&CK mapping</strong>, delivering actionable PoCs and remediation guidance</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <div class="container">
+            <h2>🖼️ Gallery</h2>
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">
+                Click on any image to view it in full size
+            </p>
+            <div class="gallery-grid">
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"
+                    src="gallery3.jpg">
+                </img>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"
+                    src="gallery2.jpg">
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"
+                    src="gallery1.jpg">
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="Gallery Image">
+    </div>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2>📞 Get In Touch</h2>
+            <div class="contact-form">
+                <form onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Send Message</button>
+                </form>
+            </div>
+
+            <div class="social-links">
+                <a href="mailto:pranavgarneria@gmail.com" title="Email">📧</a>
+                <a href="https://linkedin.com/in/pranavgarneria" target="_blank" title="LinkedIn">💼</a>
+                <a href="tel:9015000844" title="Phone">📱</a>
+            </div>
+
+            
+        </div>
+    </section>
+
+    <footer style="text-align: center; padding: 2rem; background: var(--bg-secondary); margin-top: 4rem;">
+        <p>&copy; 2025 Pranav Garneria. All Rights Reserved.</p>
+        <p style="color: var(--text-secondary); margin-top: 0.5rem;">Red Team & Offensive Security Specialist</p>
+    </footer>
+
+    <script>
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        for (let i = 0; i < columns; i++) {
+            drops[i] = 1;
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = getComputedStyle(document.documentElement)
+                .getPropertyValue('--accent-primary');
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 35);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+
+            body.classList.toggle('light-mode');
+
+            if (body.classList.contains('light-mode')) {
+                themeIcon.textContent = '☀️';
+                
+            } else {
+                themeIcon.textContent = '🌙';
+            
+            }
+        }
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll Animation
+        const sections = document.querySelectorAll('section');
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Lightbox Functions
+        function openLightbox(element) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            
+            const img = element.querySelector('img');
+            if (img) {
+                lightboxImg.src = img.src;
+            } else {
+                // For placeholder divs, create a canvas representation
+                const div = element.querySelector('div');
+                lightboxImg.src = ''; // Clear previous
+                lightboxImg.style.display = 'none';
+            }
+            
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+        }
+
+        // Contact Form Handler
+        function handleSubmit(event) {
+            event.preventDefault();
+            alert('Thank you for your message! I will get back to you soon.');
+            event.target.reset();
+        }
+
+        // Download Resume
+        function downloadResume() {
+            alert('Resume download would be implemented here. Please contact me directly for my latest CV.');
+        }
+
+        // Add active nav link on scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
